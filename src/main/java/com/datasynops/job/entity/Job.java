@@ -18,30 +18,17 @@ import lombok.Data;
 @Entity
 @Data
 public class Job {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-   // @OneToMany(mappedBy="job",fetch = FetchType.LAZY)
-   // private Set<JobDetail> jobDetail;
     private String jobName;
     @Enumerated(EnumType.STRING)
     private JobEnum status;
-    @Enumerated(EnumType.STRING)
-    private JobTypeEnum jobType;
     private Timestamp startedAt;
     private String createdBy;
-    private byte[] optionalGraphicContent;
+    private String description;
 
-    @JsonIgnore
-    private byte[] optionalText;
-
-    @Transient
-    private String optionalTextString;
-    private long campaignGeneratedCount;
-    private long canvasCompletedCount;
-    private long canvasSubmittedCount;
-    private long totalCount;
-    private String contentPath;
     public Job() {
     }
 }
