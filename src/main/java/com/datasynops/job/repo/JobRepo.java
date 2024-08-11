@@ -14,5 +14,5 @@ public interface JobRepo extends JpaRepository<Job, Long> {
             nativeQuery = true)
     List<Job> findAll();
 
-
+   
 }

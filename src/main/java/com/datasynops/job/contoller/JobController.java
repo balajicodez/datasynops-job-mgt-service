@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -45,7 +46,7 @@ public class JobController {
     @Autowired
     JobService jobService;
 
-       @Autowired
+    @Autowired
     S3Service s3Service;
    // @Autowired
     //ExcelProcessingService excelService;
@@ -55,6 +56,11 @@ public class JobController {
     @GetMapping
     public List<Job> getJobs() {
         return jobService.fetchJobs();
+    }
+
+    @GetMapping(value = "/{jobId}")
+    public Job getJob(@PathVariable("jobId") Long jobId) {
+        return jobService.fetchJob(jobId);
     }
 
     @PutMapping

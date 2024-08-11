@@ -6,6 +6,7 @@ import java.nio.channels.Channels;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.buffer.DataBuffer;
@@ -54,5 +55,10 @@ public class JobService {
 
     public List<Job> fetchJobs() {
         return jobRepo.findAll();
+    }
+
+    public Job fetchJob(Long jobId) {
+        Optional<Job> optionalJob = jobRepo.findById(jobId);
+        return optionalJob.get();
     }
 }
