@@ -43,6 +43,7 @@ public class JobController {
 
     @Value("${spring.cloud.gcp.sql.enabled:false}")
     private boolean cloudDeployment;
+
     @Autowired
     JobService jobService;
 
@@ -84,7 +85,6 @@ public class JobController {
 
     @PostMapping(value = "/file-uploads/{jobId}")
     public Mono<String> handleFileUpload(@PathVariable("jobId") String path,  @RequestBody Flux<Part> parts) throws IOException {
-      System.out.println(" parts "+parts);
       
      return  parts
      .filter(part -> part instanceof FilePart)
@@ -98,8 +98,6 @@ public class JobController {
         return Mono.empty();
     })
      .then(Mono.just("File uploaded successfully"));
-     
-      //return Mono.just("Success");
     }
 
     private Mono<Void> saveFile(String path , FilePart filePart) throws Exception {

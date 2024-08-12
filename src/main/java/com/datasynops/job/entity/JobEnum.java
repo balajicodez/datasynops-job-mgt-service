@@ -2,6 +2,7 @@ package com.datasynops.job.entity;
 
 public enum JobEnum {
     NEW,
+    INIT,
     SCHEMA_VALIDATED,
     SCHEMA_VALIDATION_SUCCESFUL,
     SURVEY_DATA_UPLOADED,
