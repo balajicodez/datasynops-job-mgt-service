@@ -18,6 +18,7 @@ public class JobDto {
     private Timestamp startedAt;
     private String createdBy;
     private String description;
+    private String platform;
    
     public JobDto() {
     }

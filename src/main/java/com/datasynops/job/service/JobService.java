@@ -52,6 +52,7 @@ public class JobService {
         job.setDescription(jobDto.getDescription());
         job.setJobName(jobDto.getJobName());
         job.setCreatedBy(jobDto.getCreatedBy());
+        job.setPlatform(jobDto.getPlatform());
         job = jobRepo.save(job);
 
         // ResponseEntity<String> response = restTemplate
@@ -60,6 +61,8 @@ public class JobService {
 
         Map<String, String> requestObject = new HashMap<String, String>();
         requestObject.put("project_id", job.getId() + "-" + job.getJobName());
+        requestObject.put("platform", job.getPlatform());
+
         String response = restTemplate.postForObject(dataEngineUrl + "/init", requestObject,
                 String.class);
         System.out.println(" resp "+response);
@@ -68,13 +71,11 @@ public class JobService {
         return job;
     }
 
-    public ResponseEntity<String> updateJob(Job job) {
-        if (job.getStatus() != null && job.getStatus().equals(JobEnum.NEW)) {
-            jobRepo.save(job);
-        }
+    public ResponseEntity<String> updateJob(Job job) {        
+        jobRepo.save(job);       
         return ResponseEntity.ok().build();
     }
-
+    
     public List<Job> fetchJobs() {
         return jobRepo.findAll();
     }
