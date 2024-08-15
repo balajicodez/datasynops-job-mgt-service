@@ -9,7 +9,7 @@ import java.util.List;
 public interface JobRepo extends JpaRepository<Job, Long> {
 
     @Query(
-            value = "SELECT id, job_name, description, status , platform, started_at, created_by \n" +
+            value = "SELECT id, job_name, description, status , platform, started_at, created_by, data_file_name \n" +
                     "FROM public.job;",
             nativeQuery = true)
     List<Job> findAll();

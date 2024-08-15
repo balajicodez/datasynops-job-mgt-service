@@ -74,9 +74,15 @@ public class JobController {
         return ResponseEntity.ok(" ");
     }
 
-    @PutMapping(value = "/msgstatus")
-    public ResponseEntity<String> updateJobDetail(@RequestBody Job job) throws Exception {
-        //String str = msgService.checkAndUpdateMsgDeliveryStatus(job);
+    @PutMapping(value = "/generate/{jobId}")
+    public ResponseEntity<String> generateSchema(@PathVariable("jobId") Long jobId) throws Exception {
+        jobService.generateSchema(jobId);
+        return ResponseEntity.ok("");
+    }
+
+    @PutMapping(value = "/run/{jobId}")
+    public ResponseEntity<String> runSchema(@PathVariable("jobId") Long jobId) throws Exception {
+        jobService.runSchema(jobId);
         return ResponseEntity.ok("");
     }
 
@@ -91,7 +97,6 @@ public class JobController {
         //System.out.println("  files "+parts);
         return parts.flatMap(file -> {
             try {
-                System.out.println("  file "+file.filename());
                 return saveFile(path, file);
             } catch (Exception e) {
                 e.printStackTrace();

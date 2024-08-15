@@ -19,7 +19,7 @@ public class JobDto {
     private String createdBy;
     private String description;
     private String platform;
-   
+    private String dataFileName;
     public JobDto() {
     }
 }

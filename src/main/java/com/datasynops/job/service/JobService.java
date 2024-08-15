@@ -53,6 +53,7 @@ public class JobService {
         job.setJobName(jobDto.getJobName());
         job.setCreatedBy(jobDto.getCreatedBy());
         job.setPlatform(jobDto.getPlatform());
+        job.setDataFileName(jobDto.getDataFileName());
         job = jobRepo.save(job);
 
         // ResponseEntity<String> response = restTemplate
@@ -62,11 +63,40 @@ public class JobService {
         Map<String, String> requestObject = new HashMap<String, String>();
         requestObject.put("project_id", job.getId() + "-" + job.getJobName());
         requestObject.put("platform", job.getPlatform());
+        requestObject.put("datamap_file_name", job.getDataFileName());
 
         String response = restTemplate.postForObject(dataEngineUrl + "/init", requestObject,
                 String.class);
-        System.out.println(" resp "+response);
+       
         job.setStatus(JobEnum.INIT);
+        jobRepo.save(job);
+        return job;
+    }
+
+    public Job generateSchema(Long jobId) {
+        System.out.println(" jobId "+jobId );
+        Job job = fetchJob(jobId);
+        Map<String, String> requestObject = new HashMap<String, String>();
+        requestObject.put("project_id", job.getId() + "-" + job.getJobName());
+   
+        restTemplate.put(dataEngineUrl + "/generate", requestObject);
+       
+        job.setStatus(JobEnum.SCHEMA_GENERATED);
+        jobRepo.save(job);
+        return job;
+    }
+
+    public Job runSchema(Long jobId) {
+        System.out.println(" jobId "+jobId );
+        Job job = fetchJob(jobId);
+        Map<String, String> requestObject = new HashMap<String, String>();
+        requestObject.put("project_id", job.getId() + "-" + job.getJobName());
+       
+        job.setStatus(JobEnum.RUNNING);
+        jobRepo.save(job);
+        restTemplate.put(dataEngineUrl + "/run", requestObject);
+       
+        job.setStatus(JobEnum.RUN_COMPLETED);
         jobRepo.save(job);
         return job;
     }
