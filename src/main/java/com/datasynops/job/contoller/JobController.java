@@ -67,6 +67,12 @@ public class JobController {
         return jobService.fetchJob(jobId);
     }
 
+    @GetMapping(value = "/content/{fileType}/{jobId}")
+    public Mono<String> getHTMLFileContent(@PathVariable("fileType") String fileType, @PathVariable("jobId") Long jobId) {
+        Job job = jobService.fetchJob(jobId);
+        return Mono.just(s3Service.get(job.getId()+"-"+job.getJobName(), "log_html.html"));
+    }
+
     @PutMapping
     public ResponseEntity<String> updateJob(@RequestBody Job job) throws Exception {
         System.out.println(" Job status " + job.getStatus());
