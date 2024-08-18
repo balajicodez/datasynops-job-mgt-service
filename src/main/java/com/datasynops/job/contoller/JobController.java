@@ -68,9 +68,16 @@ public class JobController {
     }
 
     @GetMapping(value = "/content/{fileType}/{jobId}")
-    public Mono<String> getHTMLFileContent(@PathVariable("fileType") String fileType, @PathVariable("jobId") Long jobId) {
+    public Mono<String> getFileContent(@PathVariable("fileType") String fileType, @PathVariable("jobId") Long jobId) {
         Job job = jobService.fetchJob(jobId);
-        return Mono.just(s3Service.get(job.getId()+"-"+job.getJobName(), "log_html.html"));
+        if(fileType.equals("html")) {
+            return Mono.just(s3Service.get(job.getId()+"-"+job.getJobName(), "log_html.html"));
+        } else if(fileType.equals("schema")) {
+            return Mono.just(s3Service.get(job.getId()+"-"+job.getJobName(), "schema.json"));
+        } else if(fileType.equals("python")) {
+            return Mono.just(s3Service.get(job.getId()+"-"+job.getJobName(), "validate.py"));
+        } 
+        return Mono.just("ok");
     }
 
     @PutMapping
